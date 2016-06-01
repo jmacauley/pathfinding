@@ -4,22 +4,22 @@
 
 Vangelis presented a pathfinding problem he was encountering in the rewrite of ESnet's OSCARS SDN controller - How to find a lowest cost path through the ESnet network where there is a mixture of Ethernet and MPLS links each with different connection characteristics?  Connection segments using Ethernet links must be bidirectional -  asymmetric bandwidth with symmetric paired link segments.  Connection segments using MPLS links can consist of unidirectional segments following different network paths while composing an overall bidirectional flow.  The following diagram shows the reference network with cost and bandwidth available on each link.
 
-![Test Network](https://raw.githubusercontent.com/macauley/pathfinding/master/images/network.png)
+![Test Network](https://raw.githubusercontent.com/jmacauley/pathfinding/master/images/network.png)
 
 I always try to solve these types of pathfinding problems using a standard Dijkstra shortest path algorithm with a graph that models any specific restrictions of the problem space.  Vangelis didn't think it could be done.  That was good enough to motivate me.  Challenge accepted!
 
 ## Design
 First thing I did was separate the routers into an Ethernet switch, adaptation, and MPLS router components.  This allowed a clear separation of networking capabilities, and simplified the components to perform a single function.  I then built a conceptual graph that looked like the following diagram:
 
-![Conceptual Graph](https://raw.githubusercontent.com/macauley/pathfinding/master/images/graph.png)
+![Conceptual Graph](https://raw.githubusercontent.com/jmacauley/pathfinding/master/images/graph.png)
 
 Although I started using bidirectional edges within the graph I changed to using unidirectional edges with references to the peer link in the bidirectional pair.  This allowed for a simplification in modelling.
 
-![Link Modelling](https://raw.githubusercontent.com/macauley/pathfinding/master/images/links.png)
+![Link Modelling](https://raw.githubusercontent.com/jmacauley/pathfinding/master/images/links.png)
 
 Although the class model could be simplified with a refactoring, this is the model currently being used in the code:
 
-![Class Model](https://raw.githubusercontent.com/macauley/pathfinding/master/images/model.png)
+![Class Model](https://raw.githubusercontent.com/jmacauley/pathfinding/master/images/model.png)
 
 The root object in this graph model is the ``SortedGraphObject`` that provides each object with a randomized long value used within the sorted graph to vary the path results when multiple equal paths have been computed.  The default algorithm for the Jung graph is to return the lowest cost path based on the first inserted node/edge.  As implemented this graph will randomize the result.  The remaining objects are described below.
  

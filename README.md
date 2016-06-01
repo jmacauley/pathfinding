@@ -124,9 +124,11 @@ When the edge transformer encounters an abstract edge within the Ethernet graph 
         // This is an "abstract link" requiring us to perform pathfinding
         // on the underlying MPLS graph.
         UnidirectionalResult outboundResult =
-        	mplsGraph.computeUnidirectionalPath(ab.getSourceVertex().getId(), 				ab.getDestinationVertex().getId(), outboundBandwidth);
+        	mplsGraph.computeUnidirectionalPath(ab.getSourceVertex().getId(),
+        		ab.getDestinationVertex().getId(), outboundBandwidth);
         UnidirectionalResult inboundResult =
-        	mplsGraph.computeUnidirectionalPath(ab.getDestinationVertex().getId(), 			ab.getSourceVertex().getId(), inboundBandwidth);
+        	mplsGraph.computeUnidirectionalPath(ab.getDestinationVertex().getId(),
+        		ab.getSourceVertex().getId(), inboundBandwidth);
 
         // Save the actual path and cost of the underlying MPLS path.
         ab.setPath(outboundResult.getPath());
